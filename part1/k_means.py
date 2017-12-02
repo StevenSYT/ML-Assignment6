@@ -17,12 +17,7 @@ def clusterize(row, clusters):
 
 def compareCenters(centroids, center):
    for i, centroid in enumerate(centroids):
-      if(not centroid.equals(center[i])):
-         print("centroid: ")
-         print(centroid)
-         print("center: ")
-         print(center[i])
-         print("not fully converged")
+      if(not centroid.iloc[[0],:].equals(center[i])):
          return False
    return True
 
@@ -32,7 +27,7 @@ def kMeans(data, centroids, clusters):
    center = []
 
    while(iteration <= maxIteration):
-      print("iteration", iteration,"...")
+      print("iteration", iteration,"----------------------------------------------------")
       if(center!= []):
          clusters = center
          centroids = center
@@ -40,7 +35,6 @@ def kMeans(data, centroids, clusters):
       for index, row in data.iterrows():
          # print("working on point ", index, "...")
          clusterize(data.iloc[[index], :], clusters)
-
       for index, cluster in enumerate(clusters):
          if (cluster.mean(axis = 0).to_frame().T.equals(cluster.iloc[[0], :])):
             print("centroid", index, "converges")
@@ -77,7 +71,7 @@ def outPut(outPath, clusters, sseResult):
             outFile.write(", ")
       outFile.write("\n")
    outFile.write("SSE = ")
-   outFile.write(str(sseResult))
+   outFile.write(str(sseResult)+"\n")
    print("Done!!")
 # iloc[[index],[col_num]] keeps dataframe type
 # print(pd.concat([data.iloc[[0], :], data.iloc[[1], :]]))
