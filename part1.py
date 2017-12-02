@@ -25,8 +25,11 @@ def kMeans(data, centroids, clusters):
    iteration = 1
    center = []
 
-   while(iteration <= maxIteration):
-      center = []
+   while(iteration <= 3):
+      if(center!= []):
+         clusters = center
+         centroids = center
+         center = []
       for index, row in data.iterrows():
          print("working on point ", index, "...")
          clusterize(data.iloc[[index], :], clusters)
@@ -35,8 +38,8 @@ def kMeans(data, centroids, clusters):
          if (cluster.mean(axis = 0).to_frame().T.equals(cluster.iloc[[0], :])):
             pass
          else:
-            clusters[index] = cluster.mean(axis = 0).to_frame().T
-            center.append(clusters[index])
+
+            center.append(cluster.mean(axis = 0).to_frame().T)
       if(compareCenters(centroids, center)):
          break
       iteration += 1
@@ -49,14 +52,18 @@ def SSE(clusters):
       mean = cluster.mean(axis = 0)
       meanX = mean['x']
       meanY = mean['y']
-      for index, row in cluster.iterrows():
+      print("cluster ", index)
+      print(cluster)
+      for i, row in cluster.iterrows():
          sse += ((meanX - row['x']) ** 2 + (meanY - row['y']) ** 2)
+         # print("sse equals to ", sse)
       sseList.append(sse)
    print("SSE is ", sseList)
+   return sum(sseList)
 
 # iloc[[index],[col_num]] keeps dataframe type
 # print(pd.concat([data.iloc[[0], :], data.iloc[[1], :]]))
-data = pd.read_csv("http://www.utdallas.edu/~axn112530/cs6375/unsupervised/test_data.txt", sep=("\t"))
+data = pd.read_csv("../data1.txt", sep=("\t"))
 
 data.drop(["id"], axis = 1, inplace=True)
 clusterNum =  5
@@ -73,4 +80,17 @@ for i, item in enumerate(centerIndices):
    centroids.append(data.iloc[[item],:])
    # print(clusters[i])
 clusters = kMeans(data, centroids, clusters)
-SSE(clusters)
+# print("length of clusters is ",len(clusters))
+sseResult = SSE(clusters)
+
+outFile = open("result.txt","w+")
+for index, cluster in enumerate(clusters):
+   outFile.write(str(index)+"\t")
+   print(cluster.index[1])
+   for i in range(1, len(cluster)):
+      outFile.write(str(cluster.index[i]))
+      if (i < len(cluster) - 1):
+         outFile.write(", ")
+   outFile.write("\n")
+outFile.write("SSE = ")
+outFile.write(str(sseResult))
