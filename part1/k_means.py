@@ -16,8 +16,13 @@ def clusterize(row, clusters):
    clusters[targetIndex] = pd.concat([clusters[targetIndex], row])
 
 def compareCenters(centroids, center):
-   for i, centroids in enumerate(centroids):
-      if(not centroids.equals(center[i])):
+   for i, centroid in enumerate(centroids):
+      if(not centroid.equals(center[i])):
+         print("centroid: ")
+         print(centroid)
+         print("center: ")
+         print(center[i])
+         print("not fully converged")
          return False
    return True
 
@@ -62,8 +67,8 @@ def SSE(clusters):
    return sum(sseList)
 
 def outPut(outPath, clusters, sseResult):
-   print("exporting the clusters to file'",outPath,"'" )
-   outFile = open(outPath,"w+")
+   print("exporting the clusters to file '"+outPath+"'" )
+   outFile = open(outPath,"a+")
    for index, cluster in enumerate(clusters):
       outFile.write(str(index)+"\t")
       for i in range(1, len(cluster)):
