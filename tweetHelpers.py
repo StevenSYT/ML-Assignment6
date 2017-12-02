@@ -117,4 +117,4 @@ seeds = sys.argv[2]
 tweets = sys.argv[3]
 out = sys.argv[4]
 runme(tweets,out,seeds,numClusters)
-runme("Tweets.json", "Output.txt", "InitialSeeds.txt")
+#runme("Tweets.json", "Output.txt", "InitialSeeds.txt")
