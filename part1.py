@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import random
 import math
+import sys
 
 
 def clusterize(row, clusters):
@@ -11,7 +12,6 @@ def clusterize(row, clusters):
       if (distance < minDistance):
          minDistance = distance
          targetIndex = index
-      # print("the distance to center ",index," is ", distance)
    print("this point goes to the cluster", targetIndex, "with distance ", minDistance)
    clusters[targetIndex] = pd.concat([clusters[targetIndex], row])
 
@@ -25,7 +25,7 @@ def kMeans(data, centroids, clusters):
    iteration = 1
    center = []
 
-   while(iteration <= 3):
+   while(iteration <= maxIteration):
       if(center!= []):
          clusters = center
          centroids = center
@@ -56,19 +56,31 @@ def SSE(clusters):
       print(cluster)
       for i, row in cluster.iterrows():
          sse += ((meanX - row['x']) ** 2 + (meanY - row['y']) ** 2)
-         # print("sse equals to ", sse)
       sseList.append(sse)
-   print("SSE is ", sseList)
    return sum(sseList)
 
+def outPut(outPath, clusters, sseResult):
+   outFile = open(outPath,"w+")
+   for index, cluster in enumerate(clusters):
+      outFile.write(str(index)+"\t")
+      for i in range(1, len(cluster)):
+         outFile.write(str(cluster.index[i]))
+         if (i < len(cluster) - 1):
+            outFile.write(", ")
+      outFile.write("\n")
+   outFile.write("SSE = ")
+   outFile.write(str(sseResult))
 # iloc[[index],[col_num]] keeps dataframe type
 # print(pd.concat([data.iloc[[0], :], data.iloc[[1], :]]))
-data = pd.read_csv("../data1.txt", sep=("\t"))
+
+clusterNum =  sys.argv[1] if len(sys.argv)>1 else 5
+inPath = sys.argv[2] if len(sys.argv) > 2 else "../data1.txt"
+outPath = sys.argv[3] if len(sys.argv) > 3 else "result.txt"
+data = pd.read_csv(inPath, sep=("\t"))
 
 data.drop(["id"], axis = 1, inplace=True)
-clusterNum =  5
 maxIteration = 25
-print("length of data: ", len(data))
+# print("length of data: ", len(data))
 # generate the random indices:
 centerIndices = random.sample(range(len(data)), clusterNum)
 centroids = []
@@ -82,15 +94,4 @@ for i, item in enumerate(centerIndices):
 clusters = kMeans(data, centroids, clusters)
 # print("length of clusters is ",len(clusters))
 sseResult = SSE(clusters)
-
-outFile = open("result.txt","w+")
-for index, cluster in enumerate(clusters):
-   outFile.write(str(index)+"\t")
-   print(cluster.index[1])
-   for i in range(1, len(cluster)):
-      outFile.write(str(cluster.index[i]))
-      if (i < len(cluster) - 1):
-         outFile.write(", ")
-   outFile.write("\n")
-outFile.write("SSE = ")
-outFile.write(str(sseResult))
+outPut(outPath, clusters, sseResult)
