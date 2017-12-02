@@ -22,7 +22,3 @@ def find_clusters(kernelList, tweets)
     for tweet in tweets:
         myclust = np.argmin(list(map(lambda x:distance.jaccard(x[1], tweet[1]), kernelList)))
         clusters[myclust].append(tweet)
-
-#test the code:
-tweeties = load_tweets("Tweets.json")
-print(find_Centroid(tweeties))
