@@ -17,8 +17,9 @@ def find_Centroid(tweets):
     tweetVal = np.argmin(list(map(distToAll, tweets)))
     return tweets[tweetVal]
 
-def find_clusters(kernelList, tweets)
+def find_clusters(kernelList, tweets):
     clusters = [[] for x in range(len(kernelList))]
     for tweet in tweets:
         myclust = np.argmin(list(map(lambda x:distance.jaccard(x[1], tweet[1]), kernelList)))
         clusters[myclust].append(tweet)
+    return clusters
