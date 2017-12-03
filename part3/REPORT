@@ -1,0 +1,7 @@
+Ian Gonthier, Yutong Sun
+Image quantizer:
+   uses opencv and os modules.
+   example output is in the "output" folder. Each image was sourced from the "imges" folder and
+   then processed using 5 centroids.
+
+   to run, refer to the README. 

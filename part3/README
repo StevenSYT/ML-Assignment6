@@ -1,0 +1,3 @@
+requires os, cv2-python, and sys modules.
+to run:
+   python3 part3.py <imagesDirectory> <numberOfCentroids>  

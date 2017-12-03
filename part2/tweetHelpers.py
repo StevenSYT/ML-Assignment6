@@ -79,11 +79,11 @@ def k_means_iteration(centroids, data):
     grups = find_clusters(centroids, data)
     centroids = [find_new_centroid(c,x) for c,x in zip(centroids,grups)]
     return centroids, grups
+
 #on occassion, you'll centroids which, though different tweets, have the exact same content. when
 #that happens, one of your kernels will be assigned an empty cluster.
 #I deal with that by just leaving that cluster empty. hopefully, all the other clusters will
 #eventually move out of the way and leave that cluster to itself.
-#some code to test it:
 def runme(tweetsFile, outputFile, seedsFile = None, numClusts = 25):
     tweets = load_tweets(tweetsFile)
     #load seeds from file
@@ -109,6 +109,7 @@ def runme(tweetsFile, outputFile, seedsFile = None, numClusts = 25):
     #k- means has now converged.
     print_cluster_data(centroids, clusters, outputFile, distance.jaccard, i)
 
+#actual running code
 if len(sys.argv) < 4:
     print("please use all args")
     exit()
@@ -117,4 +118,3 @@ seeds = sys.argv[2]
 tweets = sys.argv[3]
 out = sys.argv[4]
 runme(tweets,out,seeds,numClusters)
-#runme("Tweets.json", "Output.txt", "InitialSeeds.txt")

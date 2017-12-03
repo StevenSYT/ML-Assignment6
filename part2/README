@@ -1,0 +1,6 @@
+PART 2:TWEET CLUSTERING PROGRAM
+DEPENDENCIES:
+   written for python3.
+   requires distance, json, numpy, nltk, functools, csv, and sys packages.
+TO RUN:
+   python3 tweetHelpers.py <number of clusters> <seedFile path> <input file path> <output file path>

@@ -1,0 +1,5 @@
+tweet Clustering program
+refer to readme for instructions on running the program.
+
+the program has already been run once using the data from the Tweets.json file and the seeds from
+the InitialSeeds.txt file. the output is in exampleoutput.txt
